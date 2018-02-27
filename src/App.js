@@ -4,6 +4,7 @@ import './App.css'
 import Search from './Search'
 import BookCase from './BookCase'
 import { Route } from 'react-router-dom'
+import sortBy from 'sort-by'
 
 class BooksApp extends React.Component {
 	state = {
@@ -16,19 +17,20 @@ class BooksApp extends React.Component {
 	componentDidMount() {
 		BooksAPI.getAll().then(data => {
 			this.setState({
-				currentlyReading: data.filter(book => book.shelf === "currentlyReading"),
-				wantToRead: data.filter(book => book.shelf === "wantToRead"),
-				read: data.filter(book => book.shelf === "read")
+				currentlyReading: data.filter(book => book.shelf === "currentlyReading").sort(sortBy("title")),
+				wantToRead: data.filter(book => book.shelf === "wantToRead").sort(sortBy("title")),
+				read: data.filter(book => book.shelf === "read").sort(sortBy("title"))
 			})
 		})
 	}
 
-	displayBookInfo = (book) => {
-
-	}
-
 	updateBookShelf = (book, newShelf, oldShelf) => {
 		BooksAPI.update(book, newShelf).then(data => {
+			/**
+			 * Reassigns the shelf attribute on the book 
+			 * object and moves it to the correct array in 
+			 * the state object.
+			 */
 			book.shelf = newShelf
 			if (newShelf === "none") {
 				let oldShelfContents = this.state[oldShelf].filter(filterBook => filterBook.id !== book.id);
@@ -38,14 +40,14 @@ class BooksApp extends React.Component {
 			} else if (oldShelf === "none") {
 				let newShelfContents = this.state[newShelf].concat([book])
 				this.setState({
-					[newShelf]: newShelfContents
+					[newShelf]: newShelfContents.sort(sortBy("title"))
 				})
 			} else {
 				let oldShelfContents = this.state[oldShelf].filter(filterBook => filterBook.id !== book.id),
 					newShelfContents = this.state[newShelf].concat([book])
 				this.setState({
 					[oldShelf]: oldShelfContents,
-					[newShelf]: newShelfContents
+					[newShelf]: newShelfContents.sort(sortBy("title"))
 				})
 			}
 		})
@@ -60,7 +62,7 @@ class BooksApp extends React.Component {
 			books.forEach(book => {
 				book.shelf = this.determineSearchBookShelf(book)
 			})
-			this.setState({ searchBooks: books })
+			this.setState({ searchBooks: books.sort(sortBy("title")) })
 			
 		}
 		else {

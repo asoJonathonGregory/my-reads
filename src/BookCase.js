@@ -1,6 +1,7 @@
 import React from 'react'
 import BookShelf from './BookShelf'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 const BookCase = (props) => (
 	<div className="list-books">
@@ -25,4 +26,10 @@ const BookCase = (props) => (
 		</div>
 	</div>
 )
+
+BookCase.propTypes = {
+	books: PropTypes.object.isRequired,
+	updateBookShelf: PropTypes.func.isRequired
+}
+
 export default BookCase
