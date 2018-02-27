@@ -172,3 +172,29 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+.description-overlay {
+	position: fixed;
+	z-index: 100;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: darkgray;
+	opacity: 0.5;
+}
+
+.description-container {
+	position: fixed;
+	z-index: 100;
+	width: 70%;
+	left: 15%;
+	top: 20%;
+	background-color: #fff;
+	padding: 1em;
+	border-radius: 1em;
+}
+
+.description-heading {
+	margin-top: 0;
+}
