@@ -14,18 +14,18 @@ Using React's create-react-app and the scaffold provided by Udacity, this is a p
     ├── App.css 
     ├── App.js
     ├── App.test.js
-	├── Book.js
-	├── BookCase.js
-	├── BooksAPI.js
-	├── BookShelf.js
+    ├── Book.js
+    ├── BookCase.js
+    ├── BooksAPI.js
+    ├── BookShelf.js
     ├── icons
     │   ├── add.svg
     │   ├── arrow-back.svg
     │   └── arrow-drop-down.svg
     ├── index.css # Global styles.
     ├── index.js # You should not need to modify this file. It is used for DOM rendering only.
-	├── Search.js
-	└── ShelfControl.js
+    ├── Search.js
+    └── ShelfControl.js
 ```
 
 ## How To Use
