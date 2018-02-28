@@ -13,8 +13,7 @@ class Book extends Component {
 	}
 
 	handleChange = (event) => {
-		let oldShelf = this.props.book.shelf
-		this.props.updateShelf(this.props.book, event.target.value, oldShelf)
+		this.props.updateShelf(this.props.book, event.target.value)
 	}
 
 	handleClick = (event) => {

@@ -8,53 +8,46 @@ import sortBy from 'sort-by'
 
 class BooksApp extends React.Component {
 	state = {
-		currentlyReading: [],
-		wantToRead: [],
-		read: [],
+		bookShelf: [],
 		searchBooks: []
 	}
 
 	componentDidMount() {
 		BooksAPI.getAll().then(data => {
 			this.setState({
-				currentlyReading: data.filter(book => book.shelf === "currentlyReading").sort(sortBy("title")),
-				wantToRead: data.filter(book => book.shelf === "wantToRead").sort(sortBy("title")),
-				read: data.filter(book => book.shelf === "read").sort(sortBy("title"))
+				bookShelf: data
 			})
 		})
 	}
 
-	updateBookShelf = (book, newShelf, oldShelf) => {
+	updateBookShelf = (book, newShelf) => {
 		BooksAPI.update(book, newShelf).then(data => {
-			/**
-			 * Reassigns the shelf attribute on the book 
-			 * object and moves it to the correct array in 
-			 * the state object.
-			 */
+			let oldShelf = book.shelf
 			book.shelf = newShelf
 			if (newShelf === "none") {
-				let oldShelfContents = this.state[oldShelf].filter(filterBook => filterBook.id !== book.id);
 				this.setState({
-					[oldShelf]: oldShelfContents
+					bookShelf: this.state.bookShelf.filter(filterBook => filterBook.id !== book.id)
 				})
 			} else if (oldShelf === "none") {
-				let newShelfContents = this.state[newShelf].concat([book])
-				this.setState({
-					[newShelf]: newShelfContents.sort(sortBy("title"))
-				})
-			} else {
-				let oldShelfContents = this.state[oldShelf].filter(filterBook => filterBook.id !== book.id),
-					newShelfContents = this.state[newShelf].concat([book])
-				this.setState({
-					[oldShelf]: oldShelfContents,
-					[newShelf]: newShelfContents.sort(sortBy("title"))
+				this.setState(prevState => ({
+					bookShelf: prevState.bookShelf.concat([book])
+				}))
+			}
+			else {
+				console.log(this.state)
+				this.setState(prevState => {
+					let newState = prevState.bookShelf.filter(filterBook => filterBook.id !== book.id).concat([ book ])
+					return {
+						bookShelf: newState
+					}
+					 
 				})
 			}
 		})
 	}
 
 	determineSearchBookShelf= (book) => {
-		return this.state.currentlyReading.find(b => b.id === book.id) ? "currentlyReading" : (this.state.wantToRead.find(b => b.id === book.id) ? "wantToRead" : (this.state.read.find(b => b.id === book.id)) ? "read" : "none")
+		return this.state.bookShelf.find(b => b.id === book.id) ? "currentlyReading" : (this.state.bookShelf.find(b => b.id === book.id) ? "wantToRead" : (this.state.bookShelf.find(b => b.id === book.id)) ? "read" : "none")
 	}
 
 	addShelfAndUpdateState = (books) => {
@@ -82,10 +75,10 @@ class BooksApp extends React.Component {
 		return (
 			<div className="app">
 				<Route path="/search" render={() => (
-					<Search books={this.state} updateBookShelf={this.updateBookShelf} handleQuery={this.handleQuery} resetSearchState={this.resetSearchState} />
+					<Search searchBooks={this.state.searchBooks} updateBookShelf={this.updateBookShelf} handleQuery={this.handleQuery} resetSearchState={this.resetSearchState} />
 				)} />
 				<Route exact path="/" render={() => (
-					<BookCase books={this.state} updateBookShelf={this.updateBookShelf} />
+					<BookCase bookShelf={this.state.bookShelf} updateBookShelf={this.updateBookShelf} />
 				)} />
 			</div>
 		)

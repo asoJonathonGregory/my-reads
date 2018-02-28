@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 class Search extends Component {
 	static propTypes = {
-		books: PropTypes.object.isRequired,
+		searchBooks: PropTypes.array.isRequired,
 		handleQuery: PropTypes.func.isRequired,
 		resetSearchState: PropTypes.func.isRequired,
 		updateBookShelf: PropTypes.func.isRequired
@@ -45,7 +45,7 @@ class Search extends Component {
 				</div>
 				<div className="search-books-results">
 					<ol className="books-grid">
-						{this.props.books.searchBooks.map(book => (
+						{this.props.searchBooks.map(book => (
 							<Book key={book.id} updateShelf={this.props.updateBookShelf} book={book} />
 						))}
 					</ol>
