@@ -41,7 +41,7 @@ And to remove a book from the shelf, select none.
 
 ## Helpful Tips
 
-For a list of search terms to allow you to few the books in the database, use the list provided in _SEARCH_TERMS.md_. 
+For a list of search terms to allow you to find the books in the database, use the list provided in _SEARCH_TERMS.md_. 
 
 ## Create React App
 
