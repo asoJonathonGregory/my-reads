@@ -38,7 +38,7 @@ To get the project running run the following commands
 
 In this project, you can choose from a list of prechosen books maintained on Udacity's server to add to your bookshelf.
 
-The books can be on one of the following bookshelves
+The books can be on one of the following bookshelves:
 * Currently Reading
 * Want to Read
 * Read
