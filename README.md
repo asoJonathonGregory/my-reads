@@ -24,9 +24,15 @@ Using React's create-react-app and the scaffold provided by Udacity, this is a p
     │   └── arrow-drop-down.svg
     ├── index.css # Global styles.
     ├── index.js # You should not need to modify this file. It is used for DOM rendering only.
-    ├── Search.js
-    └── ShelfControl.js
+    └── Search.js
 ```
+
+## Installation
+
+To get the project running run the following commands
+
+* `npm install`
+* `npm start`
 
 ## How To Use
 

@@ -1,29 +1,52 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 import PropTypes from 'prop-types'
+import sortBy from 'sort-by'
 
 class Search extends Component {
 	static propTypes = {
-		searchBooks: PropTypes.array.isRequired,
-		handleQuery: PropTypes.func.isRequired,
-		resetSearchState: PropTypes.func.isRequired,
+		bookShelf: PropTypes.array.isRequired,
 		updateBookShelf: PropTypes.func.isRequired
 	}
 
 	state = {
-		value: ""
-	}
-
-	componentDidMount() {
-		this.props.resetSearchState()
+		value: "",
+		searchBooks: []
 	}
 
 	handleChange = (e) => {
 		this.setState({
 			value: e.target.value
 		})
-		this.props.handleQuery(e.target.value)
+		this.handleQuery(e.target.value)
+	}
+
+	determineSearchBookShelf = (book) => {
+		let isBookInShelf = this.props.bookShelf.find(b => b.id === book.id)
+		return isBookInShelf ? isBookInShelf.shelf : "none"
+	}
+
+	addShelfAndUpdateState = (books) => {
+		if (books && !books.error) {
+			books.forEach(book => {
+				book.shelf = this.determineSearchBookShelf(book)
+			})
+			this.setState({ searchBooks: books.sort(sortBy("title")) })
+
+		}
+		else {
+			this.resetSearchState()
+		}
+	}
+
+	resetSearchState = () => {
+		this.setState({ searchBooks: [] })
+	}
+
+	handleQuery = (query) => {
+		query ? BooksAPI.search(query).then(data => data ? this.addShelfAndUpdateState(data) : this.resetSearchState()) : this.resetSearchState()
 	}
 
 	render() {
@@ -45,7 +68,7 @@ class Search extends Component {
 				</div>
 				<div className="search-books-results">
 					<ol className="books-grid">
-						{this.props.searchBooks.map(book => (
+						{this.state.searchBooks.map(book => (
 							<Book key={book.id} updateShelf={this.props.updateBookShelf} book={book} />
 						))}
 					</ol>
