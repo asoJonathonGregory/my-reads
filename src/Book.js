@@ -8,8 +8,7 @@ class Book extends Component {
 	}
 
 	state = {
-		preview: false,
-		bookToPreview: {}
+		preview: false
 	}
 
 	handleChange = (event) => {
@@ -18,8 +17,7 @@ class Book extends Component {
 
 	handleClick = (event) => {
 		this.setState({
-			preview: true,
-			bookToPreview: this.props.book
+			preview: true
 		})
 	}
 
@@ -45,10 +43,10 @@ class Book extends Component {
 				</div>
 				{this.state.preview && (
 					<div>
-						<div onClick={() => this.setState({ preview: false, bookToPreview: {} })} className="description-overlay"></div>
-						<div onClick={() => this.setState({ preview: false, bookToPreview: {} })} className="description-container">
-							<h2 className="description-heading">{this.state.bookToPreview.title}</h2>
-							<p className="description-content">{this.state.bookToPreview.description || "There's no summary associated with this book"}</p>
+						<div onClick={() => this.setState({ preview: false })} className="description-overlay"></div>
+						<div onClick={() => this.setState({ preview: false })} className="description-container">
+							<h2 className="description-heading">{this.props.book.title}</h2>
+							<p className="description-content">{this.props.book.description || "There's no summary associated with this book"}</p>
 						</div>
 					</div>
 				)}
